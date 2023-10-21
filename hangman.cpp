@@ -18,17 +18,25 @@ using namespace std;
 
 class Hangman
 {
+  public:
 
   vector <char> answer;
   vector <char> guess;
   vector <char> used_letters;
   int lives = 10;
 
-  //TODO: Write function
-  public:
   Hangman(vector<string> &words)
   //The game, taking a category of words as input to choose randomly from.
   {
+    //FIXME: Turn it into random picking after test
+    //For testing only
+    string testt = words[0];
+
+    for (int i=0; i<words[0].size(); i++)
+    {
+      answer.push_back(testt[i]);
+    }
+
     for (int i=0; i < answer.size(); i++)
     {
       guess.push_back('_');
@@ -36,50 +44,51 @@ class Hangman
     //TODO: Write the game
   }
 
+
   void play ()
   {
-
     bool newLetter = true;
     //TODO Introduction to the game etc.
     //ADD: Another loop for multiple rouds of play-> Another function with a loop calling play multiple times!
     //FIXME: Do I need the parantheses?
-    while (!(didLose) && !(didWin))
+    while (!(didLose()) && !(didWin()))
     {
       char l = acceptLetter();
-      for (auto i: used_letters)
+      //FIXME: Get rif of the if, already checked in aceptLetter whether the letter is repeated or not
+      bool correctLetter = false;
+      //since it is already a new letter...
+      for (auto i: answer)
       {
         if (l == i)
         {
-          cout << "You have already entered this letter, please try a new one." << endl;
-          newLetter = false;
-          break;
+          correctLetter = true;
+          //TODO: Replace underscore with letter
+          char to_replace = answer.at(i);
+          guess.at(i) = to_replace;
         }
       }
-      if (newLetter)
+
+      if (!correctLetter)
       {
-        bool correctLetter = false;
-        for (auto i: answer)
-        {
-          if (l == i)
-          {
-            correctLetter = true;
-            //TODO: Replace underscore with letter
-            //add l to used_letters
-          }
-        }
-        if (!correctLetter)
-        {
-          lives--;
-        }
+        lives--;
+        //ASCII Art
+        //The rest of the status info is given later
+        cout << "\nYou have " << lives << " lives left." << endl;
+      }
+      if (didLose())
+      {
+        string str(answer.begin(), answer.end());
+        cout << "You lost!" << endl;
+        cout << "The word was: " << str << "." << endl;
+        break;
+      }
+      if (didWin())
+      {
+        cout << "CONGRATULATIONS!" << endl;
+        cout << "You won!" << endl;
+        break;
       }
     }
-    //TODO: Whichever is true: didLose or didWin, print corresponding messages.
-
-
-
-
-
-
     return;
   }
 
@@ -112,20 +121,27 @@ class Hangman
       return false;
   }
 
-
+  //TEST VERSION: Only give uppercase letters as input
   char acceptLetter ()
   {
-    char buffer;
-    cout << "Enter a letter";
-    cin >> buffer;
+    char l;
+    cout << "Enter a letter" << endl;
+    cin >> l;
+    used_letters.push_back(l);
     //TODO: Multiple input checks, if wrong input given, retake the input: might need a loop
     //TODO: Convert letter to uppercase.
-    return buffer;
+    return l;
   }
+
   //returns true if the player has entered the same letter before, false if it is their first time guessing the letter
   bool didRepeat (char x)
   {
-    //TODO: Write function
+    for (auto i: used_letters)
+    {
+      if (i  == x)
+        return true;
+    }
+    return false;
   }
 
   bool isLetter (char x)
@@ -146,14 +162,6 @@ class Hangman
     //TODO: Print letters of guessed word and unknowns are stored as underscores.
   }
 
-
-
-
-
-
-
-
-
 };
 
 
@@ -161,11 +169,25 @@ class Hangman
 int main () {
 
   //TEST VECTOR
-  vector<string> words {"ekin", "chris", "pablo", "bounty"};
+  vector<string> words{"ekin", "chris", "pablo", "bounty"};
 
+  Hangman hangman = Hangman(words);
+
+  //TEST BEGIN
+  cout << "Answer is: " << endl;
+  for (auto i: hangman.answer)
+  {
+    cout << i << endl;
+  }
+
+  cout << "/n/nGuess is: " << endl;
+  for (auto i: hangman.guess)
+  {
+    cout << i << endl;
+  }
+  //TEST END
   
-
-
+  hangman.play();
 
   return 0;
 }
