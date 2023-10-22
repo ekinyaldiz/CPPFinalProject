@@ -28,22 +28,18 @@ class Hangman
   Hangman(vector<string> &words)
   //The game, taking a category of words as input to choose randomly from.
   {
-    //FIXME: Turn it into random picking after test
-    //For testing only
-    //string testt = words[0];
     srand(time(0));
-    string testt = words.at(rand()%words.size());
+    string word = words.at(rand()%words.size());
 
-    for (int i=0; i < testt.size(); i++)
+    for (int i=0; i < word.size(); i++)
     {
-      answer.push_back(testt[i]);
+      answer.push_back(toupper(word[i]));
     }
 
     for (int i=0; i < answer.size(); i++)
     {
       guess.push_back('_');
     }
-    //TODO: Write the game
   }
 
 
@@ -52,12 +48,10 @@ class Hangman
     bool newLetter = true;
     //TODO Introduction to the game etc.
     //ADD: Another loop for multiple rouds of play-> Another function with a loop calling play multiple times!
-    //FIXME: Do I need the parantheses?
     while (!(didLose()) && !(didWin()))
     {
       showCurrentStatus();  
       char l = acceptLetter();
-      //FIXME: Get rif of the if, already checked in aceptLetter whether the letter is repeated or not
       bool correctLetter = false;
       //since it is already a new letter...
       for (int i=0; i < answer.size(); i++)
@@ -69,7 +63,6 @@ class Hangman
           guess.at(i) = l;
         }
       }
-
       if (!correctLetter)
       {
         lives--;
@@ -86,7 +79,10 @@ class Hangman
       }
       if (didWin())
       {
-        cout << "CONGRATULATIONS!" << endl;
+        //cout << "before" << endl;
+        showCurrentStatus(); 
+        //cout << "after" << endl;
+        cout << "\nCONGRATULATIONS!" << endl;
         cout << "You won!" << endl;
         break;
       }
@@ -95,16 +91,6 @@ class Hangman
   }
 
   private:
-
-  //FIXME: Deal with how and which form to get the list of data later.
-  // vector<char> pickword(vector <string> &words)
-  // {
-  //   //sth
-  //   //IMPORTANT: return in uppercase for better visuals
-  //   int size = words.size();
-  //   string pick = words.at(rand() % size);
-  //   return ();
-  // }
 
   bool didWin ()
   {
@@ -123,15 +109,16 @@ class Hangman
       return false;
   }
 
-  //TEST VERSION: Only give uppercase letters as input
   char acceptLetter ()
   {
     char l;
     cout << "Enter a letter" << endl;
     cin >> l;
+    if (islower(l))
+      l = toupper(l);
+
     used_letters.push_back(l);
     //TODO: Multiple input checks, if wrong input given, retake the input: might need a loop
-    //TODO: Convert letter to uppercase.
     return l;
   }
 
@@ -146,26 +133,21 @@ class Hangman
     return false;
   }
 
+  //Already built-in function: isalpha()
+  //Maybe combine with it the validation of a single character
+
   bool isLetter (char x)
   {
     //FIXME: Should it be just a char, or what if they enter something else??
     //TODO: After FIXME, check the ASCII value for valid characters in the game.
   }
 
-  //Takes a lowercase letter and converts it to uppercase, the 
-  char upperCase (char l)
-  {
-    //TODO: Write function
-  }
-
   void showCurrentStatus ()
   {
         for (auto i: guess)
     {
-      cout << i << ", "<< endl;
+      cout << i << ", ";
     }
-    //IF lives did not change..?
-    //TODO: Print letters of guessed word and unknowns are stored as underscores.
   }
 
 };
