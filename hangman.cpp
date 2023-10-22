@@ -45,12 +45,10 @@ class Hangman
 
   void play ()
   {
-    bool newLetter = true;
     //TODO Introduction to the game etc.
     //ADD: Another loop for multiple rouds of play-> Another function with a loop calling play multiple times!
     while (!(didLose()) && !(didWin()))
-    {
-      showCurrentStatus();  
+    {  
       char l = acceptLetter();
       bool correctLetter = false;
       //since it is already a new letter...
@@ -92,6 +90,8 @@ class Hangman
 
   private:
 
+
+
   bool didWin ()
   {
     //TODO: declare global/class-wise "guess" and "answer"
@@ -110,15 +110,27 @@ class Hangman
   }
 
   char acceptLetter ()
-  {
+  { 
+    showCurrentStatus();
     char l;
+    bool flag = true;
     cout << "Enter a letter" << endl;
     cin >> l;
     if (islower(l))
       l = toupper(l);
-
+    while (didRepeat(l) || !isalpha(l))
+    {
+      //showCurrentStatus();
+      cout << "Entry invalid."<< endl;
+      cout << "Enter only one character at a time" << endl;
+      cout << "Enter a letter" << endl;
+      cin >> l;
+      if (islower(l))
+        l = toupper(l);
+      if (!didRepeat(l) && isalpha(l))
+        break;
+    }
     used_letters.push_back(l);
-    //TODO: Multiple input checks, if wrong input given, retake the input: might need a loop
     return l;
   }
 
