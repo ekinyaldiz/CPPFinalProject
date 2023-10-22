@@ -30,9 +30,11 @@ class Hangman
   {
     //FIXME: Turn it into random picking after test
     //For testing only
-    string testt = words[0];
+    //string testt = words[0];
+    srand(time(0));
+    string testt = words.at(rand()%words.size());
 
-    for (int i=0; i<words[0].size(); i++)
+    for (int i=0; i < testt.size(); i++)
     {
       answer.push_back(testt[i]);
     }
@@ -53,6 +55,7 @@ class Hangman
     //FIXME: Do I need the parantheses?
     while (!(didLose()) && !(didWin()))
     {
+      showCurrentStatus();  
       char l = acceptLetter();
       //FIXME: Get rif of the if, already checked in aceptLetter whether the letter is repeated or not
       bool correctLetter = false;
@@ -157,6 +160,10 @@ class Hangman
 
   void showCurrentStatus ()
   {
+        for (auto i: guess)
+    {
+      cout << i << ", "<< endl;
+    }
     //IF lives did not change..?
     //TODO: Print letters of guessed word and unknowns are stored as underscores.
   }
@@ -171,22 +178,6 @@ int main () {
   vector<string> words{"bounty", "ekin", "chris", "pablo"};
 
   Hangman hangman = Hangman(words);
-
-  //TEST BEGIN
-  /*
-  cout << "Answer is: " << endl;
-  for (auto i: hangman.answer)
-  {
-    cout << i << endl;
-  }
-  */
-
-  cout << "/n/nGuess is: " << endl;
-  for (auto i: hangman.guess)
-  {
-    cout << i << endl;
-  }
-  //TEST END 
   hangman.play();
 
   return 0;
