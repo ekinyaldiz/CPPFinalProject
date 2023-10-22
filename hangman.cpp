@@ -8,6 +8,8 @@
  *
  * Compiler call
  * g++ -std=c++11
+ * 
+ * 
  */
 
 #include <iostream>
@@ -123,21 +125,23 @@ class Hangman
     char l;
     bool flag = true;
     cout << "Enter a letter" << endl;
-    cin >> l;
-    if (islower(l))
-      l = toupper(l);
-    while (didRepeat(l) || !isalpha(l))
+    l = getchar();
+    cin.clear();
+    fflush(stdin);
+    while (didRepeat(toupper(l)) || !isalpha(l) || cin.fail())
     {
-      //showCurrentStatus();
+      cin.clear();
+      fflush(stdin);
       cout << "Entry invalid."<< endl;
       cout << "Enter only one character at a time" << endl;
-      cout << "Enter a letter" << endl;
-      cin >> l;
-      if (islower(l))
-        l = toupper(l);
-      if (!didRepeat(l) && isalpha(l))
-        break;
+      cout << "Enter a letter and do not repeat" << endl;
+      l = getchar();
+      cin.clear();
+      fflush(stdin);
+      cout << l << endl;
     }
+    if (islower(l))
+      l = toupper(l);
     used_letters.push_back(l);
     return l;
   }
@@ -201,4 +205,3 @@ int main (int argc, char **argv) {
 
   return 0;
 }
-
