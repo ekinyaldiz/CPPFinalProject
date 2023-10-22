@@ -1,8 +1,17 @@
-/*
-TODO: Student info!
-*/
+/* Project work C-course, block course WiSe 2023 
+* Course participants: 
+* Ekin Yaldiz
+* Student ID: 2263663
+*
+* Project name: 
+* Hangman Game
+ *
+ * Compiler call
+ * g++ -std=c++11
+ */
 
 #include <iostream>
+#include <fstream>
 //For randomly picking a word
 #include <cstdlib>
 #include <ctime>
@@ -91,7 +100,6 @@ class Hangman
   private:
 
 
-
   bool didWin ()
   {
     //TODO: declare global/class-wise "guess" and "answer"
@@ -164,12 +172,29 @@ class Hangman
 
 };
 
+//Function reference: https://shorturl.at/azSU7
+vector<std::string> readFileToVector(const std::string& filename)
+{
+    std::ifstream source;
+    source.open(filename);
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(source, line))
+    {
+        lines.push_back(line);
+    }
+    return lines;
+}
+
 
 /* MAIN */
-int main () {
+int main (int argc, char **argv) {
+
+  string charactersFilename(argv[1]);
+  vector<string> words = readFileToVector(charactersFilename);
 
   //TEST VECTOR
-  vector<string> words{"bounty", "ekin", "chris", "pablo"};
+  //vector<string> words{"bounty", "ekin", "chris", "pablo"};
 
   Hangman hangman = Hangman(words);
   hangman.play();
