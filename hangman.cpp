@@ -57,14 +57,13 @@ class Hangman
       //FIXME: Get rif of the if, already checked in aceptLetter whether the letter is repeated or not
       bool correctLetter = false;
       //since it is already a new letter...
-      for (auto i: answer)
+      for (int i=0; i < answer.size(); i++)
       {
-        if (l == i)
+        if (l == answer.at(i))
         {
           correctLetter = true;
           //TODO: Replace underscore with letter
-          char to_replace = answer.at(i);
-          guess.at(i) = to_replace;
+          guess.at(i) = l;
         }
       }
 
@@ -138,7 +137,7 @@ class Hangman
   {
     for (auto i: used_letters)
     {
-      if (i  == x)
+      if (i == x)
         return true;
     }
     return false;
@@ -169,24 +168,25 @@ class Hangman
 int main () {
 
   //TEST VECTOR
-  vector<string> words{"ekin", "chris", "pablo", "bounty"};
+  vector<string> words{"bounty", "ekin", "chris", "pablo"};
 
   Hangman hangman = Hangman(words);
 
   //TEST BEGIN
+  /*
   cout << "Answer is: " << endl;
   for (auto i: hangman.answer)
   {
     cout << i << endl;
   }
+  */
 
   cout << "/n/nGuess is: " << endl;
   for (auto i: hangman.guess)
   {
     cout << i << endl;
   }
-  //TEST END
-  
+  //TEST END 
   hangman.play();
 
   return 0;
